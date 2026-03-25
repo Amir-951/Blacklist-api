@@ -5,7 +5,7 @@ __pycache__/
 venv/
 .env
 
-# Data (don't push blacklist images to git — use persistent disk on Render)
+# Data — blacklist images stay local (not in git)
 data/blacklist/
 data/users/
 
@@ -17,6 +17,3 @@ blacklist-app/
 
 # Old static frontend
 static/
-
-# Misc
-*.sh
