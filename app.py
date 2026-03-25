@@ -209,9 +209,18 @@ def add_blacklist(upload: BlacklistUpload, user_id: str = Depends(get_user_id)):
     if ext not in {".jpg", ".jpeg", ".png"}:
         raise HTTPException(status_code=400, detail="Unsupported format (use JPG/PNG)")
     img = face_recognition.load_image_file(io.BytesIO(data))
+    # Remove alpha channel if it exists (causes errors in face_recognition)
+    if img.shape[-1] == 4:
+        img = img[..., :3]
+
     encodings = face_recognition.face_encodings(img)
     if not encodings:
-        raise HTTPException(status_code=400, detail="No face found in image")
+        locations = face_recognition.face_locations(img, model="hog", number_of_times_to_upsample=2)
+        if locations:
+            encodings = face_recognition.face_encodings(img, locations)
+    
+    if not encodings:
+        raise HTTPException(status_code=400, detail="No face found in image. Try a clearer or closer photo.")
 
     entry_id = uuid.uuid4().hex
     filename = f"{entry_id}{ext}"
