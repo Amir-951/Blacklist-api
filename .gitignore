@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+venv/
+.env
+
+# Data (don't push blacklist images to git — use persistent disk on Render)
+data/blacklist/
+data/users/
+
+# macOS
+.DS_Store
+
+# Next.js frontend (separate repo)
+blacklist-app/
+
+# Old static frontend
+static/
+
+# Misc
+*.sh
