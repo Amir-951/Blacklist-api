@@ -18,9 +18,12 @@ RUN pip install --upgrade pip && \
     pip install face_recognition --no-deps && \
     pip install fastapi "uvicorn[standard]" Pillow numpy python-multipart
 
+# Create required directories (static/ for old UI, data/blacklist/ for images)
+RUN mkdir -p /app/static /app/data/blacklist /app/data/users
+
 # Copy app files
 COPY app.py .
-COPY data/ ./data/
+COPY data/metadata.json ./data/
 
 EXPOSE 8000
 
