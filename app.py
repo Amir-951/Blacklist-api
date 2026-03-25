@@ -79,7 +79,7 @@ def resolve_user_paths(user_id: str):
 
 
 def load_blacklist_for_user(user_id: str):
-    _, blacklist_dir = resolve_user_paths(user_id)
+    metadata_path, blacklist_dir = resolve_user_paths(user_id)
     if not metadata_path.exists():
         return [], []
 
