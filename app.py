@@ -107,7 +107,8 @@ def load_blacklist_for_user(user_id: str):
             image = np.array(Image.fromarray(image).resize((new_w, new_h)))
         encodings = face_recognition.face_encodings(image)
         if not encodings:
-            locations = face_recognition.face_locations(image, model="cnn")
+            # Fallback to hog with upsampling if default fails
+            locations = face_recognition.face_locations(image, model="hog", number_of_times_to_upsample=2)
             if locations:
                 encodings = face_recognition.face_encodings(image, locations)
         if not encodings:
@@ -183,8 +184,7 @@ def startup_event():
 
 @app.get("/")
 def root():
-    index_path = Path(__file__).parent / "static" / "index.html"
-    return FileResponse(index_path)
+    return {"status": "online", "message": "Blacklist API is running. UI is hosted on Vercel."}
 
 
 @app.get("/health")
